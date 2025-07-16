@@ -13,6 +13,7 @@ app.get("/weather", async (req, res) => {
   const city = req.query.city;
   if (!city) return res.status(400).json({ error: "Missing city param" });
 
+  console.log(`New fetch call for: ${city}`);
   const apiKey = process.env.OPEN_WEATHER_API_KEY;
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=hu`;
 
@@ -21,7 +22,9 @@ app.get("/weather", async (req, res) => {
     if (!respone.ok) throw new Error("Unable to fetch city Data");
     const weatherData = await respone.json();
     res.json(weatherData);
+    console.log("successful fetch call");
   } catch (err) {
+    console.log(err.message);
     res.status(500).json({ error: err.message });
   }
 });
