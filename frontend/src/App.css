@@ -8,6 +8,7 @@
 .input {
   background-color: transparent;
   border: none;
-  font-size: 16px;
-  padding: 8px 4px;
+  font-size: 1rem;
+  padding: 0.6em 1.2em;
+  border: 1px;
 }
