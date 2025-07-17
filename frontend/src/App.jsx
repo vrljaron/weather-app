@@ -14,7 +14,6 @@ function App() {
       const respone = await fetch(`http://localhost:3001/weather?city=${city}`);
       if (!respone.ok) throw new Error({ error: "The city cannot be found." });
       const weatherData = await respone.json();
-      console.log(`Fetch Call resp: ${JSON.stringify(respone)}`);
       setWeatherData(weatherData);
     } catch (error) {
       alert(error.message);
@@ -29,10 +28,13 @@ function App() {
         city={city}
       ></SearchBar>
       {weatherData && (
-        <>
-          <WeatherDisplay weatherData={weatherData.currentData} />
+        <div className="weather-container">
+          <WeatherDisplay
+            weatherData={weatherData.currentData}
+            city={weatherData.city}
+          />
           <ForecastDisplay forecastData={weatherData.forecastData} />
-        </>
+        </div>
       )}
     </div>
   );

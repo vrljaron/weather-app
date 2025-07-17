@@ -2,10 +2,10 @@ import WeatherDisplay from "./WeatherDisplay";
 
 function ForecastDisplay({ forecastData }) {
   return (
-    <div>
-      {forecastData.map((weatherBlockData) => {
-        <WeatherDisplay weatherData={weatherBlockData}></WeatherDisplay>;
-      })}
+    <div className="forecast-scroll">
+      {forecastData.list.map((weatherBlockData, index) => (
+        <WeatherDisplay key={index} weatherData={weatherBlockData} />
+      ))}
     </div>
   );
 }
