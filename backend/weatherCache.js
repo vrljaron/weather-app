@@ -6,7 +6,7 @@ export function getCachedCity(city) {
     if (!cityData) return null;
 
     const now = Date.now();
-    const isFreshData = now - cityData.timestamp * 30 * 60 * 1000;
+    const isFreshData = now - cityData.timestamp < 30 * 60 * 1000;
     return isFreshData ? cityData : null;
   } catch (error) {
     console.error("Cache read error:", error);
