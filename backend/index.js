@@ -18,8 +18,7 @@ app.get("/weather", async (req, res) => {
   const cachedCity = getCachedCity(city);
   if (cachedCity) {
     console.log(`Fresh cached data for: ${city}`);
-    console.log(cachedCity);
-    return res.json({ ...cachedCity.data, cached: true });
+    return res.json(...cachedCity.data);
   }
 
   console.log(`New fetch call for: ${city}`);
@@ -42,15 +41,13 @@ app.get("/weather", async (req, res) => {
 
     const responseData = {
       city: city,
-      weatherData: currentWeatherData,
+      currentData: currentWeatherData,
       forecastData: forecastWeatherData,
     };
 
-    console.log(JSON.stringify(responseData));
-
     setCachedCity(city, responseData);
 
-    res.json({ responseData, cached: false });
+    res.json(responseData);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
