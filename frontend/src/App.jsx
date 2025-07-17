@@ -30,7 +30,7 @@ function App() {
       ></SearchBar>
       {weatherData && (
         <>
-          <WeatherDisplay weatherData={weatherData.weatherData} />
+          <WeatherDisplay weatherData={weatherData.currentData} />
           <ForecastDisplay forecastData={weatherData.forecastData} />
         </>
       )}
