@@ -4,7 +4,7 @@
   "description": "backend for weather-app",
   "license": "ISC",
   "author": "Varaljai Aron",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

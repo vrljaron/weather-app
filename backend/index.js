@@ -2,25 +2,52 @@ import express from "express";
 import dotenv from "dotenv";
 import fetch from "node-fetch";
 import cors from "cors";
+import { getCachedCity, setCachedCity } from "./weatherCache.js";
 
 dotenv.config();
 const app = express();
-const PORT = 3001;
-
 app.use(cors());
+
+const PORT = 3001;
+const apiKey = process.env.OPEN_WEATHER_API_KEY;
 
 app.get("/weather", async (req, res) => {
   const city = req.query.city;
   if (!city) return res.status(400).json({ error: "Missing city param" });
 
-  const apiKey = process.env.OPEN_WEATHER_API_KEY;
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=hu`;
+  const cachedCity = getCachedCity(city);
+  if (cachedCity) {
+    console.log(`Fresh cached data for: ${city}`);
+    return res.json(cachedCity.data);
+  }
+
+  console.log(`New fetch call for: ${city}`);
+
+  const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=hu`;
+  const forecastWeatherUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric&lang=hu`;
 
   try {
-    const respone = await fetch(url);
-    if (!respone.ok) throw new Error("Unable to fetch city Data");
-    const weatherData = await respone.json();
-    res.json(weatherData);
+    const [currentWeatherRes, forecastWeatherRes] = await Promise.all([
+      fetch(currentWeatherUrl),
+      fetch(forecastWeatherUrl),
+    ]);
+
+    if (!currentWeatherRes.ok || !forecastWeatherRes.ok) {
+      throw new Error("Unable to fetch city Data from the API");
+    }
+
+    const currentWeatherData = await currentWeatherRes.json();
+    const forecastWeatherData = await forecastWeatherRes.json();
+
+    const responseData = {
+      city: city,
+      currentData: currentWeatherData,
+      forecastData: forecastWeatherData,
+    };
+
+    setCachedCity(responseData);
+
+    res.json(responseData);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

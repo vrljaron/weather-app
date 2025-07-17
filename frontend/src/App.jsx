@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import SearchBar from "./components/SearchBar";
+import WeatherDisplay from "./components/WeatherDisplay";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [city, setCity] = useState("");
+  const [weatherData, setWeatherData] = useState(null);
+
+  async function fetchWeather() {
+    if (!city) return;
+    try {
+      const respone = await fetch(`http://localhost:3001/weather?city=${city}`);
+      if (!respone.ok) throw new Error({ error: "The city cannot be found." });
+      const weatherData = respone.json();
+      setWeatherData(weatherData);
+      console.log(`Fetch Call resp: ${weatherData}`);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <SearchBar
+        fetchWeather={fetchWeather}
+        setCity={setCity}
+        city={city}
+      ></SearchBar>
+      <WeatherDisplay weatherData={weatherData}></WeatherDisplay>
+    </div>
+  );
 }
 
-export default App
+export default App;
