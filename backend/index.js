@@ -18,7 +18,7 @@ app.get("/weather", async (req, res) => {
   const cachedCity = getCachedCity(city);
   if (cachedCity) {
     console.log(`Fresh cached data for: ${city}`);
-    return res.json(...cachedCity.data);
+    return res.json(cachedCity.data);
   }
 
   console.log(`New fetch call for: ${city}`);
@@ -45,7 +45,7 @@ app.get("/weather", async (req, res) => {
       forecastData: forecastWeatherData,
     };
 
-    setCachedCity(city, responseData);
+    setCachedCity(responseData);
 
     res.json(responseData);
   } catch (err) {

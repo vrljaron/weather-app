@@ -14,12 +14,12 @@ export function getCachedCity(city) {
   }
 }
 
-export function setCachedCity(city, data) {
+export function setCachedCity(data) {
   try {
-    const key = city?.toLowerCase();
+    const key = data.city?.toLowerCase();
     if (!key || !data) throw new Error("Missing Key or Data on City:", city);
 
-    weatherCache[city.toLowerCase()] = {
+    weatherCache[data.city.toLowerCase()] = {
       data,
       timestamp: Date.now(),
     };
