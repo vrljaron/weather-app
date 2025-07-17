@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import fetch from "node-fetch";
 import cors from "cors";
-import { getCachedCity, setCachedCity } from "./weatherCache";
+import { getCachedCity, setCachedCity } from "./weatherCache.js";
 
 dotenv.config();
 const app = express();
@@ -10,8 +10,6 @@ app.use(cors());
 
 const PORT = 3001;
 const apiKey = process.env.OPEN_WEATHER_API_KEY;
-const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=hu`;
-const forecastWeatherUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric&lang=hu`;
 
 app.get("/weather", async (req, res) => {
   const city = req.query.city;
@@ -24,6 +22,9 @@ app.get("/weather", async (req, res) => {
   }
 
   console.log(`New fetch call for: ${city}`);
+
+  const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=hu`;
+  const forecastWeatherUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric&lang=hu`;
 
   try {
     const [currentWeatherRes, forecastWeatherRes] = await Promise.all([
