@@ -13,7 +13,7 @@ const apiKey = process.env.OPEN_WEATHER_API_KEY;
 const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=hu`;
 const forecastWeatherUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric&lang=hu`;
 
-app.get("/weather/full", async (req, res) => {
+app.get("/weather", async (req, res) => {
   const city = req.query.city;
   if (!city) return res.status(400).json({ error: "Missing city param" });
 
