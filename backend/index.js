@@ -18,6 +18,7 @@ app.get("/weather", async (req, res) => {
   const cachedCity = getCachedCity(city);
   if (cachedCity) {
     console.log(`Fresh cached data for: ${city}`);
+    console.log(cachedCity);
     return res.json({ ...cachedCity.data, cached: true });
   }
 
@@ -42,8 +43,10 @@ app.get("/weather", async (req, res) => {
     const responseData = {
       city: city,
       weatherData: currentWeatherData,
-      forecastWeatherData,
+      forecastData: forecastWeatherData,
     };
+
+    console.log(JSON.stringify(responseData));
 
     setCachedCity(city, responseData);
 
