@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar";
 import WeatherDisplay from "./components/WeatherDisplay";
+import ForecastDisplay from "./components/ForecastDisplay";
 
 function App() {
   const [city, setCity] = useState("");
@@ -27,8 +28,11 @@ function App() {
         setCity={setCity}
         city={city}
       ></SearchBar>
-      {weatherData?.name && (
-        <WeatherDisplay weatherData={weatherData}></WeatherDisplay>
+      {weatherData && (
+        <>
+          <WeatherDisplay weatherData={weatherData.currentWeatherData} />
+          <ForecastDisplay forecastData={weatherData.forecastWeatherData} />
+        </>
       )}
     </div>
   );
