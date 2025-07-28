@@ -11,7 +11,9 @@ function App() {
   async function fetchWeather() {
     if (!city) return;
     try {
-      const respone = await fetch(`http://localhost:3001/weather?city=${city}`);
+      const respone = await fetch(
+        `${import.meta.env.BACKEND_URL}/weather?city=${city}`
+      );
       if (!respone.ok) throw new Error({ error: "The city cannot be found." });
       const weatherData = await respone.json();
       setWeatherData(weatherData);
