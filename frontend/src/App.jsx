@@ -12,7 +12,7 @@ function App() {
     if (!city) return;
     try {
       const respone = await fetch(
-        `${import.meta.env.BACKEND_URL}/weather?city=${city}`
+        `${import.meta.env.VITE_BACKEND_URL}/weather?city=${city}`
       );
       if (!respone.ok) throw new Error({ error: "The city cannot be found." });
       const weatherData = await respone.json();
